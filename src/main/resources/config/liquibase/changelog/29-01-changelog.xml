@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.5.xsd"
+        objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
+    <changeSet id="1651228419054-1" author="RaziyevBB (generated)">
+        <createSequence incrementBy="1" sequenceName="seq_author" startValue="1"/>
+    </changeSet>
+    <changeSet id="1651228419054-2" author="RaziyevBB (generated)">
+        <createSequence incrementBy="1" sequenceName="seq_book" startValue="1"/>
+    </changeSet>
+    <changeSet id="1651228419054-3" author="RaziyevBB (generated)">
+        <createSequence incrementBy="1" sequenceName="seq_role" startValue="1"/>
+    </changeSet>
+    <changeSet id="1651228419054-4" author="RaziyevBB (generated)">
+        <createSequence incrementBy="1" sequenceName="seq_user" startValue="1"/>
+    </changeSet>
+    <changeSet id="1651228419054-5" author="RaziyevBB (generated)">
+        <createTable tableName="author">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_author"/>
+            </column>
+            <column name="full_name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="birth_of_date" type="DATETIME"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="1651228419054-6" author="RaziyevBB (generated)">
+        <createTable tableName="author_books">
+            <column name="author_id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_author_books"/>
+            </column>
+            <column name="books_id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_author_books"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="1651228419054-7" author="RaziyevBB (generated)">
+        <createTable tableName="book">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_book"/>
+            </column>
+            <column name="title" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="quantity" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="price" type="DECIMAL(3, 2)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="published_date" type="DATETIME">
+                <constraints nullable="false"/>
+            </column>
+            <column name="user_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="1651228419054-8" author="RaziyevBB (generated)">
+        <createTable tableName="role">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_role"/>
+            </column>
+            <column name="role_name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="1651228419054-9" author="RaziyevBB (generated)">
+        <createTable tableName="users">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_users"/>
+            </column>
+            <column name="first_name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="username" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="email" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="password" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="enabled" type="BOOLEAN">
+                <constraints nullable="false"/>
+            </column>
+            <column name="account_non_locked" type="BOOLEAN">
+                <constraints nullable="false"/>
+            </column>
+            <column name="account_non_expired" type="BOOLEAN">
+                <constraints nullable="false"/>
+            </column>
+            <column name="credentials_non_expired" type="BOOLEAN">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="DATETIME">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="1651228419054-10" author="RaziyevBB (generated)">
+        <createTable tableName="users_roles">
+            <column name="role_id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_users_roles"/>
+            </column>
+            <column name="user_id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_users_roles"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="1651228419054-11" author="RaziyevBB (generated)">
+        <addUniqueConstraint columnNames="role_name" constraintName="uc_role_role_name" tableName="role"/>
+    </changeSet>
+    <changeSet id="1651228419054-12" author="RaziyevBB (generated)">
+        <addUniqueConstraint columnNames="email" constraintName="uc_users_email" tableName="users"/>
+    </changeSet>
+    <changeSet id="1651228419054-13" author="RaziyevBB (generated)">
+        <addUniqueConstraint columnNames="username" constraintName="uc_users_username" tableName="users"/>
+    </changeSet>
+    <changeSet id="1651228419054-14" author="RaziyevBB (generated)">
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="book" constraintName="FK_BOOK_ON_USER"
+                                 referencedColumnNames="id" referencedTableName="users"/>
+    </changeSet>
+    <changeSet id="1651228419054-15" author="RaziyevBB (generated)">
+        <addForeignKeyConstraint baseColumnNames="author_id" baseTableName="author_books"
+                                 constraintName="fk_autboo_on_author" referencedColumnNames="id"
+                                 referencedTableName="author"/>
+    </changeSet>
+    <changeSet id="1651228419054-16" author="RaziyevBB (generated)">
+        <addForeignKeyConstraint baseColumnNames="books_id" baseTableName="author_books"
+                                 constraintName="fk_autboo_on_book" referencedColumnNames="id"
+                                 referencedTableName="book"/>
+    </changeSet>
+    <changeSet id="1651228419054-17" author="RaziyevBB (generated)">
+        <addForeignKeyConstraint baseColumnNames="role_id" baseTableName="users_roles"
+                                 constraintName="fk_userol_on_role" referencedColumnNames="id"
+                                 referencedTableName="role"/>
+    </changeSet>
+    <changeSet id="1651228419054-18" author="RaziyevBB (generated)">
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="users_roles"
+                                 constraintName="fk_userol_on_user" referencedColumnNames="id"
+                                 referencedTableName="users"/>
+    </changeSet>
+
+</databaseChangeLog>

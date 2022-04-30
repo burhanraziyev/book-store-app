@@ -1,0 +1,10 @@
+version: '3'
+services:
+  db-book-store:
+    image: postgres:11.10
+    environment:
+      - POSTGRES_DB=book-store-db
+      - POSTGRES_USER=bs-user
+      - POSTGRES_PASSWORD=bs123
+    ports:
+      - "5432:5432"

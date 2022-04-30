@@ -1,0 +1,61 @@
+spring:
+  application:
+    name: konkurs
+
+  # Message source config
+  messages:
+    basename: i18n/messages
+    encoding: UTF-8
+    fallback-to-system-locale: true
+    always-use-message-format: false
+
+  # Postgresql datasource configuration
+  datasource:
+    url: jdbc:postgresql://localhost:5432/book-store-db
+    username: bs-user
+    password: bs123
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: true
+    openInView: false
+    generate-ddl: false
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate.format_sql: true
+
+  # Liquibase configuration
+  liquibase:
+    change-log: classpath:config/liquibase/master.xml
+    enabled: true
+
+
+# Logging configuration
+logging:
+  level:
+    org:
+      hibernate:
+        cache: DEBUG
+        SQL: DEBUG
+      springframework.web: INFO
+
+
+# Server configuration
+server:
+  port: 9999
+  error:
+    whitelabel:
+      enabled: false
+    include-message: always
+    include-binding-errors: always
+
+application:
+  security:
+    jwt:
+      expiration-time: 864000000
+      secret-key: ingress_unibank2022
+      token-header: Authorization
+
+
