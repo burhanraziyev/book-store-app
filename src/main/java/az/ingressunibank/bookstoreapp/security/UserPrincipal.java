@@ -9,44 +9,47 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
+import static az.ingressunibank.bookstoreapp.config.properties.SecurityProperties.AUTHORITY_PREFIX;
+
 @RequiredArgsConstructor
 public class UserPrincipal implements UserDetails {
     private final User user;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return user.getRoles().stream()
-                .map(role -> new SimpleGrantedAuthority("ROLE_" + role.getRoleName()))
+        return this.user.getRoles().stream()
+                .map(role -> new SimpleGrantedAuthority(AUTHORITY_PREFIX + role.getRoleName()))
                 .collect(Collectors.toSet());
     }
 
+
     @Override
     public String getPassword() {
-        return user.getPassword();
+        return this.user.getPassword();
     }
 
     @Override
     public String getUsername() {
-        return user.getUsername();
+        return this.user.getUsername();
     }
 
     @Override
     public boolean isAccountNonExpired() {
-        return true;
+        return this.user.getAccountNonExpired();
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return user.getAccountNonLocked();
+        return this.user.getAccountNonLocked();
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return true;
+        return this.user.getCredentialsNonExpired();
     }
 
     @Override
     public boolean isEnabled() {
-        return user.getEnabled();
+        return this.user.getEnabled();
     }
 }

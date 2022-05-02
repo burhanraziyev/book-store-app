@@ -32,7 +32,7 @@ public class UserServiceImpl implements UserService {
         String password = passwordEncoder.encode(request.getPassword());
         Role role = roleService.findByRoleName(request.getRoleName());
         User user = mapper.toEntity(request, password, Set.of(role));
-        return mapper.toDto(userRepository.save(user));
+        return mapper.toDto(userRepository.saveAndFlush(user));
     }
 
     @Override

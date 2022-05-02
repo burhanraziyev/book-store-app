@@ -41,21 +41,13 @@ public class AuthenticationTokenFilter extends OncePerRequestFilter {
 
         if (requestTokenHeader != null && requestTokenHeader.startsWith("Bearer ")) {
             jwtToken = requestTokenHeader.substring(7);
-            try {
-                username = tokenProvider.getUsernameFromToken(jwtToken);
-            } catch (IllegalArgumentException e) {
-                throw new IllegalArgumentException("Unable to get JWT Token");
-            } catch (ExpiredJwtException e) {
-                throw new TokenExpiredException("Token was expired");
-            }
-        } else {
-            log.info("JWT token does not start with Bearer");
-        }
+            try {username = tokenProvider.getUsernameFromToken(jwtToken);}
+            catch (IllegalArgumentException e) {throw new IllegalArgumentException("Unable to get JWT Token");}
+            catch (ExpiredJwtException e) {throw new TokenExpiredException("Token was expired");}
+        } else {log.info("JWT token does not start with Bearer");}
 
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-
             UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-
             if (tokenProvider.validateToken(jwtToken, userDetails)) {
                 var usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                 usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));

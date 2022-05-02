@@ -1,5 +1,6 @@
 package az.ingressunibank.bookstoreapp.model.request;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
@@ -13,5 +14,6 @@ public class CreateAuthorRequest {
     private String fullName;
 
     @NotNull
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
     private LocalDateTime birthOfDate;
 }

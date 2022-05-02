@@ -1,7 +1,7 @@
 package az.ingressunibank.bookstoreapp.config;
 
-import az.ingressunibank.bookstoreapp.security.filter.CustomAccessDeniedHandler;
-import az.ingressunibank.bookstoreapp.security.filter.UnAuthorizedEntryPoint;
+import az.ingressunibank.bookstoreapp.security.filter.RestAccessDeniedHandler;
+import az.ingressunibank.bookstoreapp.security.filter.RestAuthenticationEntryPoint;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,8 +16,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import static org.springframework.http.HttpHeaders.ALLOW;
-
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
@@ -25,8 +23,8 @@ import static org.springframework.http.HttpHeaders.ALLOW;
 public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     private final UserDetailsService userDetailsService;
-    private final UnAuthorizedEntryPoint authenticationEntryPoint;
-    private final CustomAccessDeniedHandler accessDeniedHandler;
+    private final RestAuthenticationEntryPoint authenticationEntryPoint;
+    private final RestAccessDeniedHandler accessDeniedHandler;
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -38,7 +36,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
         http.cors();
         http.csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/api/v1/auth/login", "/api/v1/users/sign-up").permitAll()
+                .antMatchers("/api/v1/auth", "/api/v1/users/sign-up").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .exceptionHandling()

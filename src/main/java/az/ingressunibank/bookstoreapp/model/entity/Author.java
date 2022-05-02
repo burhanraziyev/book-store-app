@@ -54,7 +54,7 @@ public class Author {
     @JoinTable(name = "author_books",
             joinColumns = @JoinColumn(name = "author_id"),
             inverseJoinColumns = @JoinColumn(name = "books_id"))
-    private Set<Book> books = new LinkedHashSet<>();
+    private Set<Book> books;
 
     @Override
     public boolean equals(Object o) {

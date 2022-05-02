@@ -58,7 +58,7 @@ public class Book {
     private LocalDateTime publishedDate;
 
     @ManyToMany(fetch = EAGER, mappedBy = "books")
-    private Set<Author> authors = new LinkedHashSet<>();
+    private Set<Author> authors;
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
