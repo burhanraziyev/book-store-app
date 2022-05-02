@@ -34,7 +34,7 @@ public class RestAccessDeniedHandler implements AccessDeniedHandler {
         response.sendError(SC_FORBIDDEN);
         response.setContentType(APPLICATION_JSON_VALUE);
 
-        ApiError apiError = new ApiError(FORBIDDEN.getReasonPhrase(),ex.getLocalizedMessage());
+        ApiError apiError = new ApiError(FORBIDDEN.getReasonPhrase(),ex.getLocalizedMessage(),request.getRequestURI());
         OutputStream out = response.getOutputStream();
         mapper.writeValue(out, apiError);
         out.flush();

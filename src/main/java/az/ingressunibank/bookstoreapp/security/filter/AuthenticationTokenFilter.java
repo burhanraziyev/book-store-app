@@ -21,6 +21,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+import static az.ingressunibank.bookstoreapp.config.properties.SecurityProperties.TOKEN_PREFIX;
+
 @Slf4j
 @Component
 @RequiredArgsConstructor
@@ -39,7 +41,7 @@ public class AuthenticationTokenFilter extends OncePerRequestFilter {
         String username = null;
         String jwtToken = null;
 
-        if (requestTokenHeader != null && requestTokenHeader.startsWith("Bearer ")) {
+        if (requestTokenHeader != null && requestTokenHeader.startsWith(TOKEN_PREFIX)) {
             jwtToken = requestTokenHeader.substring(7);
             try {username = tokenProvider.getUsernameFromToken(jwtToken);}
             catch (IllegalArgumentException e) {throw new IllegalArgumentException("Unable to get JWT Token");}

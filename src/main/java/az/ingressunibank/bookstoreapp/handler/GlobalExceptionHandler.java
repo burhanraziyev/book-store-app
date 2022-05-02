@@ -56,31 +56,29 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         errors.addAll(globalErrors);
         errors.addAll(fieldErrors);
 
-        ApiError response = new ApiError(ex.getLocalizedMessage(), BAD_REQUEST.getReasonPhrase(), errors);
+        ApiError response = new ApiError(ex.getLocalizedMessage(), BAD_REQUEST.getReasonPhrase(),getPath(request), errors);
         return new ResponseEntity<>(response, BAD_REQUEST);
     }
 
     @Override
     protected ResponseEntity<Object> handleMissingPathVariable(MissingPathVariableException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
-        ApiError response = new ApiError(ex.getLocalizedMessage(), BAD_REQUEST.getReasonPhrase());
+        ApiError response = new ApiError(ex.getLocalizedMessage(), BAD_REQUEST.getReasonPhrase(),getPath(request));
         return new ResponseEntity<>(response, BAD_REQUEST);
     }
 
     @Override
     protected ResponseEntity<Object> handleExceptionInternal(Exception ex, Object body, HttpHeaders headers, HttpStatus status, WebRequest request) {
-        ApiError err = new ApiError(ex.getLocalizedMessage(), BAD_REQUEST.getReasonPhrase(),List.of("Something went wrong"));
-        return new ResponseEntity<>(err, BAD_REQUEST);
+        ApiError response = new ApiError(ex.getLocalizedMessage(), BAD_REQUEST.getReasonPhrase(),getPath(request),List.of("Something went wrong"));
+        return new ResponseEntity<>(response, BAD_REQUEST);
     }
 
     @ExceptionHandler(ConstraintViolationException.class)
     public ResponseEntity<Object> handleConstraintViolationException(
             ConstraintViolationException ex,
             WebRequest request) {
-
         List<String> details = new ArrayList<>();
         details.add(ex.getMessage());
-
-        ApiError err = new ApiError(ex.getLocalizedMessage(), BAD_REQUEST.getReasonPhrase(), details);
+        ApiError err = new ApiError(ex.getLocalizedMessage(), BAD_REQUEST.getReasonPhrase(),getPath(request),details);
         return new ResponseEntity<>(err, BAD_REQUEST);
     }
 
@@ -88,9 +86,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     public ResponseEntity<Object> handleResourceNotFoundException(
             ResourceNotFoundException ex,
             WebRequest request) {
-
-        ApiError err = new ApiError(ex.getLocalizedMessage(), NOT_FOUND.getReasonPhrase());
-
+        ApiError err = new ApiError(ex.getLocalizedMessage(), NOT_FOUND.getReasonPhrase(),getPath(request));
         return new ResponseEntity<>(err, NOT_FOUND);
     }
 
@@ -98,9 +94,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     public ResponseEntity<Object> handleUsernameNotFoundException(
             UsernameNotFoundException ex,
             WebRequest request) {
-
-        ApiError err = new ApiError(ex.getLocalizedMessage(), NOT_FOUND.getReasonPhrase());
-
+        ApiError err = new ApiError(ex.getLocalizedMessage(), NOT_FOUND.getReasonPhrase(),getPath(request));
         return new ResponseEntity<>(err, NOT_FOUND);
     }
 
@@ -108,9 +102,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     public ResponseEntity<Object> handleBadCredentialsException(
             BadCredentialsException ex,
             WebRequest request) {
-
-        ApiError err = new ApiError(ex.getLocalizedMessage(), UNAUTHORIZED.getReasonPhrase());
-
+        ApiError err = new ApiError(ex.getLocalizedMessage(), UNAUTHORIZED.getReasonPhrase(),getPath(request));
         return new ResponseEntity<>(err, UNAUTHORIZED);
     }
 
@@ -118,9 +110,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     public ResponseEntity<Object> handleDisabledException(
             DisabledException ex,
             WebRequest request) {
-
-        ApiError err = new ApiError(ex.getLocalizedMessage(), UNAUTHORIZED.getReasonPhrase());
-
+        ApiError err = new ApiError(ex.getLocalizedMessage(), UNAUTHORIZED.getReasonPhrase(),getPath(request));
         return new ResponseEntity<>(err, UNAUTHORIZED);
     }
 
@@ -128,9 +118,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     public ResponseEntity<Object> handleTokenExpiredException(
             TokenExpiredException ex,
             WebRequest request) {
-
-        ApiError err = new ApiError(ex.getLocalizedMessage(), NOT_ACCEPTABLE.getReasonPhrase());
-
+        ApiError err = new ApiError(ex.getLocalizedMessage(), NOT_ACCEPTABLE.getReasonPhrase(),getPath(request));
         return new ResponseEntity<>(err, NOT_ACCEPTABLE);
     }
 
@@ -138,10 +126,12 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     public ResponseEntity<Object> handleAccessDeniedException(
             AccessDeniedException ex,
             WebRequest request) {
-
-        ApiError err = new ApiError(ex.getLocalizedMessage(), FORBIDDEN.getReasonPhrase());
-
+        ApiError err = new ApiError(ex.getLocalizedMessage(), FORBIDDEN.getReasonPhrase(),getPath(request));
         return new ResponseEntity<>(err, FORBIDDEN);
+    }
+
+    private String getPath(WebRequest request) {
+        return request.getDescription(false).substring(4);
     }
 
 }

@@ -29,7 +29,10 @@ public class TokenProvider {
     }
 
     private Claims getAllClaimsFromToken(String token) {
-        return Jwts.parser().setSigningKey(jwtProperties.getSecretKey()).parseClaimsJws(token).getBody();
+        return Jwts.parser()
+                .setSigningKey(jwtProperties.getSecretKey())
+                .parseClaimsJws(token)
+                .getBody();
     }
 
     public boolean validateToken(String token, UserDetails userDetails) {
@@ -54,7 +57,7 @@ public class TokenProvider {
                 .setClaims(claims)
                 .setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + jwtProperties.getExpirationTime()))
+                .setExpiration(new Date(System.currentTimeMillis() + jwtProperties.getAccessTokenExpirationTime()))
                 .signWith(HS512, jwtProperties.getSecretKey())
                 .compact();
     }

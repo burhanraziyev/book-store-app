@@ -33,17 +33,20 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.cors();
-        http.csrf().disable()
-                .authorizeRequests()
-                .antMatchers("/api/v1/auth", "/api/v1/users/sign-up").permitAll()
-                .anyRequest().authenticated()
-                .and()
-                .exceptionHandling()
+        //Disabling Cross-Origin-Resource-Sharing and Cross-Site-Request-Forgery checks.
+        http.cors().and().csrf().disable();
+
+        //Setting request security settings
+        http.authorizeRequests().antMatchers("/api/v1/auth/**").permitAll()
+                .anyRequest().authenticated();
+
+        //Disabling session management
+        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+
+        // Exception handling
+        http.exceptionHandling()
                 .authenticationEntryPoint(authenticationEntryPoint)
-                .accessDeniedHandler(accessDeniedHandler)
-                .and()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+                .accessDeniedHandler(accessDeniedHandler);
     }
 
     @Bean

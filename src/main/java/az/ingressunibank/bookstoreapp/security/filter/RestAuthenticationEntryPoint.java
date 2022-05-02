@@ -34,7 +34,7 @@ public class RestAuthenticationEntryPoint implements AuthenticationEntryPoint {
         response.setStatus(SC_UNAUTHORIZED);
         response.setContentType(APPLICATION_JSON_VALUE);
 
-        ApiError apiError = new ApiError(UNAUTHORIZED.getReasonPhrase(),ex.getLocalizedMessage());
+        ApiError apiError = new ApiError(UNAUTHORIZED.getReasonPhrase(),ex.getLocalizedMessage(),request.getRequestURI());
         OutputStream out = response.getOutputStream();
         mapper.writeValue(out, apiError);
         out.flush();

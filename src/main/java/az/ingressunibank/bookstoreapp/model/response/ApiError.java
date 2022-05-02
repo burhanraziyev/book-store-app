@@ -12,20 +12,23 @@ public class ApiError {
     private final String code;
     private final String message;
     private final List<String> errors;
+    private final String path;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy hh:mm:ss")
     private final LocalDateTime timestamp;
 
-    public ApiError(String message, String code, List<String> errors) {
+    public ApiError(String message, String code, String path, List<String> errors) {
         this.timestamp = LocalDateTime.now();
         this.message = message;
         this.code = code;
+        this.path = path;
         this.errors = errors;
     }
 
-    public ApiError(String message, String code) {
+    public ApiError(String message, String code, String path) {
         this.timestamp = LocalDateTime.now();
         this.message = message;
         this.code = code;
+        this.path = path;
         this.errors = new ArrayList<>();
     }
 }
